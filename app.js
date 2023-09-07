@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const knex = require('knex');
+const {authenticateUser} = require('./middleware/authMiddleware')
 const { Model } = require('objection');
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
@@ -37,7 +38,7 @@ app.use((req, res, next) => {
 
 
 app.use('/api/auth', authRoutes);
-app.use('/api/users', userRoutes);
+app.use('/api/users', authenticateUser, userRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
